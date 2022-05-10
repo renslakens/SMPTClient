@@ -14,7 +14,7 @@ public class WaitForRcptToState implements SmtpStateInf {
         //Handle "RCPT TO: <user@domain.nl>" Command & TRANSITION TO NEXT STATE
         if(data.toUpperCase().startsWith("RCPT TO: ")) {
             context.AddRecipient(data.substring(9));
-            context.SendData("250 RCPT to " + context.GetMailFrom());
+            context.SendData("Recipient OK");
             context.SetNewState(new WaitForRcptToOrDataState(context));
             return;
         }
