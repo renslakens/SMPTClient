@@ -12,7 +12,19 @@ public class WaitForRcptToState implements SmtpStateInf {
     @Override
     public void Handle(String data) {
         //Handle "RCPT TO: <user@domain.nl>" Command & TRANSITION TO NEXT STATE
+        if(data.toUpperCase().startsWith("RCPT TO: ")) {
+            context.AddRecipient(data.substring(9));
+            context.SendData("250 RCPT to " + context.GetMailFrom());
+            context.SetNewState(new WaitForRcptToOrDataState(context));
+            return;
+        }
         //Handle "QUIT" Command
+        if(data.toUpperCase().startsWith("QUIT")) {
+            context.SendData("221 Bye");
+            context.DisconnectSocket();
+            return;
+        }
         //Generate "503 Error on invalid input"
+        context.SendData("503 Error...");
     }
 }
