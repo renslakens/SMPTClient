@@ -12,7 +12,7 @@ public class WelcomeState implements SmtpStateInf {
 
     @Override
     public void Handle(String data) {
-        //Handle HELLO command
+        //Handle HELO command
        if(data.toUpperCase().startsWith("HELO ")) {
             context.SetHost(data.substring(5));
             context.SendData("250 Hello " + context.GetHost() + ", I am glad to meet you");

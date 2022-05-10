@@ -19,11 +19,13 @@ public class WaitForRcptToOrDataState implements SmtpStateInf {
             return;
         }
         //Handle "DATA" Command & TRANSITION TO NEXT STATE
-        if(data.toUpperCase().startsWith("DATA ")) {
-            context.AddTextToBody(data.substring(5));
+        if(data.toUpperCase().equals("DATA")) {
+            context.SendData("354 Start mail input; end with <CRLF>.<CRLF>");
+            context.AddTextToBody(data);
             context.SetNewState(new ReceivingDataState(context));
             return;
         }
+
         //Handle "QUIT" Command
         if(data.toUpperCase().startsWith("QUIT")) {
             context.SendData("221 Bye");
